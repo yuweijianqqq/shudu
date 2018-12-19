@@ -15,6 +15,8 @@ void output();
 bool check();
 int panduan(char *q);
 bool sign = false;
+char w[500000000];
+char u[500000000];
 ofstream Output;
 ifstream input;
 
@@ -22,6 +24,7 @@ ifstream input;
 void shengcheng(int n)
 {
 	m = 0;
+	int t=0;
 	int s[9] = { 0,3,6,1,4,7,2,5,8 };//行的平移 
 	for (int i = 0; i < 2; i++)
 	{
@@ -32,7 +35,7 @@ void shengcheng(int n)
 			for (int k = 0; k < 6; k++)
 			{
 				if (k != 0) next_permutation(s + 6, s + 9);//789行变换
-				int y[9] = { 7,1,2,3,4,5,6,8,9 };//初始行 
+				char y[9] = {'7','1','2','3','4','5','6','8','9'};//初始行 
 				for (int l = 0; l < 40320; l++)
 				{
 					if (l != 0) next_permutation(y + 1, y + 9);//行之间换 
@@ -44,20 +47,36 @@ void shengcheng(int n)
 						{
 							int p = c + s[b];
 							d[b][c] = d[0][p % 9];
-							if (c == 8) Output << d[b][c];
-							else Output << d[b][c] << " ";
+							if (c == 8&&b<8) 
+							{
+								w[t++]=d[b][c];
+								w[t++]='\n';
+							}
+							if(c==8&&b==8)
+							{
+								w[t++]=d[b][c];
+								w[t++]='\n';
+								w[t++]='\n';
+							}
+							if(c<8&&b<9)
+							{
+							w[t++]=d[b][c];
+							w[t++]=' ';	
+							} 
 						}
-
-						Output << endl;
 					}
-					Output << endl;
 					m++;
 					if (m >= n)
-						return;
+					{
+					   Output<<w;
+				    	return;
+					}
+					
 				}
 			}
 		}
 	}
+	
 
 }
 
@@ -79,41 +98,56 @@ int panduan(char *q)
 
 void output()//输出 
 {
+	int t=0;
 	for (int i = 0; i < 9; i++)
 	{
 		for (int j = 0; j < 9; j++)
 		{
-			if (j == 8) Output << d[i][j];
-			else Output << d[i][j] << " ";
-		}
-		Output << endl;
+			if (j == 8&&i<8) 
+			{
+				u[t++]=d[i][j]+'0';
+				u[t++]='\n';
+			}
+			if(j==8&&i==8)
+			{
+				u[t++]=d[i][j]+'0';
+				u[t++]='\n';
+		    	u[t++]='\n';
+			}
+			if(j<8&&i<9)
+			{
+			
+		    	u[t++]=d[i][j]+'0';
+			    u[t++]=' ';	
+			} 
+		}	
 	}
-	Output << endl;
+	Output<<u;	
 }
 
 bool check(int n)
 {
-	int hang = n / 9;
-	int lie = n % 9;
-	for (int i = 0; i < 9; i++)
+    int hang=n/9; 
+	int lie=n%9;
+	for(int i=0;i<9;i++)
 	{
-		if (d[hang][i] == d[hang][lie] && i != lie)  return false;//检查行 
+		if(d[hang][i]==d[hang][lie]&&i!=lie)  return false;//检查行 
 	}
-	for (int i = 0; i < 9; i++)
+	for(int i=0;i<9;i++)
 	{
-		if (d[i][lie] == d[hang][lie] && i != hang) return false;//检查列
+		if(d[i][lie]==d[hang][lie]&&i!=hang ) return false;//检查列
 	}
 	int x = n / 9 / 3 * 3;
-	int y = n % 9 / 3 * 3;
-	for (int i = x; i < x + 3; i++)
-	{
-		for (int j = y; j < y + 3; j++)
-		{
-			if (d[i][j] == d[hang][lie] && i != hang && j != lie) return false;//检查小九宫格 
-		}
-	}
-	return true;
-}
+    int y = n % 9 / 3 * 3; 
+    for (int i = x; i < x + 3; i++)
+    {
+        for (int j = y; j < y + 3; j++)
+        {
+            if (d[i][j]==d[hang][lie]&&i!=hang&&j!=lie) return false;//检查小九宫格 
+        }
+    }
+    return true;
+} 
 int DFS(int n)
 {
     if (n>80)
@@ -180,7 +214,6 @@ int main(int argc, char *argv[])
 			}
 		}
 	}
-	else cout << "Wrong input!" << endl;
+	else cout << "错误的命令" << endl;
 	return 0;
 }
-
