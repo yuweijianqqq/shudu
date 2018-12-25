@@ -1,0 +1,3 @@
+对代码的改动全部都是在shudu.cpp中进行
+sukodu.cpp是最终完成的代码（代码和shudu.cpp最后的版本相同）
+sukodu.exe是它的可执行文件，sukodu.txt用来保存生成的数独和数独的解。
