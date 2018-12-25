@@ -150,23 +150,27 @@ bool check(int n)
 } 
 int DFS(int n)
 {
+	if (sign) return 0;
     if (n>80)
     {
-        output();
+    	output();
+		sign=true;
         return 0;
     }
     if(d[n/9][n%9] == 0){
-		for(int i = 1; i <= 9; ++i){
+		for(int i = 1; i <= 9; i++)
+		{
 			d[n/9][n%9] = i;//赋值
-			if(check(n)){//可以放
+			if(check(n))//可以放
+			{
 				DFS(n+1);//进入下一层
 			}
 		}
 		d[n/9][n%9] = 0;//回溯
-	}else{
+	}else
+	{
 		DFS(n+1);
 	}
-
 }
 
 int main(int argc, char *argv[])
@@ -175,7 +179,7 @@ int main(int argc, char *argv[])
 	Output.open("sudoku.txt");
 	if (strcmp(argv[1], "-c") == 0)
 	{
-
+     
 		int b = panduan(argv[2]);
 		if (b == 1)
 		{
@@ -209,6 +213,7 @@ int main(int argc, char *argv[])
 			}
 			if (i>8) 
 			{
+				sign=false;
 				DFS(0);//解给定的数独
 				i = 0; j =0;
 			}
